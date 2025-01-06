@@ -35,17 +35,9 @@ where
             .map_err(|error| {
                 serde::de::Error::custom(format!("Invalid provider domain URL \"{url}\": {error}"))
             })?;
-        if parsed_url.url().host_str() == Some("localhost")
-            || parsed_url.url().host_str() == Some("127.0.0.1")
-        {
-            return Ok(parsed_url);
-        } else {
-            return Err(serde::de::Error::custom("must use HTTPS"));
-        }
+        return Ok(parsed_url);
     };
-    url.starts_with("https://")
-        .then_some(url.clone())
-        .ok_or(serde::de::Error::custom("must use HTTPS"))
+    Ok(url.clone())
         .and_then(|url| serde_json::to_string(&url))
         .and_then(|json| serde_json::from_str(&json))
         .map_err(|error| {
