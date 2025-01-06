@@ -156,6 +156,7 @@ xorf = { git = "https://github.com/sujayakar/xorf.git", rev = "62a32de47bb3ad8b3
 [profile.release]
 opt-level = 3
 panic = "abort"
+debug = true
 
 [profile.slim-release]
 inherits = "release"
