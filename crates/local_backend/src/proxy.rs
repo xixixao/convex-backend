@@ -38,6 +38,7 @@ pub async fn dev_site_proxy(
         mut request: Request,
     ) -> Result<impl IntoResponse, HttpResponseError> {
         let new_uri = format!("{}/http{}", st, request.uri());
+        tracing::info!("Proxying request to {}", new_uri);
         *request.uri_mut() = new_uri.parse().map_err(anyhow::Error::new)?;
         let resp = hyper_util::client::legacy::Client::builder(TokioExecutor::new())
             .build_http()

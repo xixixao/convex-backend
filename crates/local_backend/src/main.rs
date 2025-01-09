@@ -120,6 +120,10 @@ async fn run_server_inner(runtime: ProdRuntime, config: LocalConfig) -> anyhow::
     let serve_http_future = http_service.serve(config.http_bind_address().into(), async move {
         let _ = shutdown_rx_.recv().await;
     });
+    tracing::info!(
+        "Starting dev site proxy with {:?}...",
+        config.convex_origin_url()
+    );
     let proxy_future = dev_site_proxy(
         config.site_bind_address(),
         config.convex_origin_url(),
